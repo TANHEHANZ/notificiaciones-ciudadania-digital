@@ -1,43 +1,19 @@
-import { TypeOf, z } from "zod";
+import { z } from "zod";
+import { notificadorSchema } from "./natural/notificador";
+import { AutoridadSchema } from "./natural/autoridad";
+import { NotificadoSchema } from "./natural/notificados";
+import { EnlaceSchema } from "./natural/enlaces";
+import { FormularioSchema } from "./natural/formulario";
 
-const datosAdicionalesEntidadSchema = z.object({
-  clave: z.string().max(30),
-  valor: z.string().max(100),
-});
-
-const documentoAdjuntoSchema = z.object({
-  etiqueta: z.string(),
-  url: z.string(),
-  tipo: z.enum(["FIRMA", "APROBACION"]),
-  hash: z.string(),
-});
-
-const seguridadSchema = z.object({
-  llaveSimetrica: z.string(),
-  iv: z.string(),
-});
-
-const notificacionSchema = z.object({
-  datosAdicionalesEntidad: z.array(datosAdicionalesEntidadSchema).optional(),
+export const notificacionSchema = z.object({
   titulo: z.string().max(255),
-  descripcion: z.string(), // Cifrado simétrico
-  notificador: z.string(), // Cifrado simétrico
-  autoridad: z.string(), // Cifrado simétrico
-  notificados: z.array(z.string()), // Cifrado simétrico por cada uno
-  enlaces: z.array(documentoAdjuntoSchema),
-  formularioNotificacion: documentoAdjuntoSchema,
+  descripcion: z.string().max(600),
+  notificador: notificadorSchema,
+  autoridad: AutoridadSchema,
+  notificados: z.array(NotificadoSchema),
+  enlaces: z.array(EnlaceSchema),
+  formulario: FormularioSchema,
   entidadNotificadora: z.string().optional(),
 });
 
-const SchemaNotificationNatural = z.object({
-  notificacion: notificacionSchema,
-  seguridad: seguridadSchema,
-});
-
-const MainNotification = z.object({
-  ...SchemaNotificationNatural.shape,
-  sha256: z.string(),
-});
-
-export type DTO_MainNotification = z.infer<typeof MainNotification>;
 export type DTO_NotificationNatural = z.infer<typeof notificacionSchema>;

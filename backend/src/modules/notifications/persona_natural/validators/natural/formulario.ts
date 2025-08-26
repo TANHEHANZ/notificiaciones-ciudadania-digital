@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const FormularioSchema = z.object({
+export const FormularioSchema = z.object({
   etiqueta: z.string(),
   url: z.string().url(),
   tipo: z.enum(["FIRMA", "APROBACION"]),
