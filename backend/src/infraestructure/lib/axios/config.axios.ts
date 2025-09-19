@@ -1,9 +1,10 @@
-import {
-  AppError,
-  NotFoundError,
-  ValidationError,
-} from "@/infraestructure/utils/helpers/errors";
-import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios";
+import { AppError } from "@/infraestructure/helpers/errors";
+import axios, {
+  AxiosInstance,
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 
 interface ConfigAxiosOptions {
   baseURL: string;
@@ -24,7 +25,7 @@ export const createApiInstance = (
     },
   });
 
-  api.interceptors.request.use((config) => {
+  api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     if (options.token) {
       if (options.customAuthHeader) {
         config.headers[options.customAuthHeader] = options.token;
@@ -42,31 +43,20 @@ export const createApiInstance = (
     }
     return config;
   });
-
   api.interceptors.response.use(
-    (response: AxiosResponse) => response.data,
-    (error: AxiosError): Promise<never> => {
-      if (error.response) {
-        console.log(error.response.data);
-        const status = error.response.status;
-        const data = error.response.data;
-
-        switch (status) {
-          case 400:
-            throw new ValidationError("Error en la API", data);
-          case 404:
-            throw new NotFoundError("Recurso no encontrado", data);
-          default:
-            throw new AppError("Error en el servicio externo", status, data);
-        }
-      } else if (error.request) {
-        throw new AppError("Sin respuesta del servidor", 503);
-      } else {
+    (response: AxiosResponse) => {
+      return response;
+    },
+    (error: AxiosError) => {
+      if (!error.response) {
         throw new AppError(
           error.message || "Error interno de configuración",
           500
         );
       }
+      const status = error.response.status;
+      const message = (error.response.data as any)?.message || "Error de API";
+      throw new AppError(message, status);
     }
   );
 

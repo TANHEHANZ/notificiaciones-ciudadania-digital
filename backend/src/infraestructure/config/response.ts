@@ -1,101 +1,122 @@
 import { Response } from "express";
-import { HTTP_STATUS } from "../CONSTANTS/http/http";
-
-export interface ApiResponse<T> {
-  status: number;
-  message: string;
-  data?: T;
-  errors?: any;
-  metadata?: {
-    timestamp: string;
-    path: string;
-    [key: string]: any;
-  };
-}
-
-export interface PaginatedData<T> {
-  items: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
+import {
+  ApiResponse,
+  ApiError,
+  PaginatedApiResponse,
+  PaginatedData,
+} from "@infraestructure/types/ApiResponse";
+import { HTTP_STATUS } from "@infraestructure/types/http";
 
 export const API = {
-  createResponse: <T>(
+  success: <T>(
     res: Response,
-    status: number,
     message: string,
     data?: T,
-    errors?: any
-  ): Response => {
-    const response: ApiResponse<T> = {
-      status,
+    code = HTTP_STATUS.OK
+  ): Response<ApiResponse<T>> => {
+    return res.status(code).json({
+      code,
       message,
-    };
-
-    if (data) response.data = data;
-    if (errors) {
-      response.errors =
-        typeof errors === "object" ? errors : { message: errors };
-    }
-
-    return res.status(status).json(response);
+      data,
+    });
+  },
+  badRequest: (
+    res: Response,
+    message: string,
+    errors?: ApiError[],
+    code = HTTP_STATUS.BAD_REQUEST
+  ): Response<ApiResponse<null>> => {
+    return res.status(code).json({
+      code,
+      message,
+      errors,
+    });
+  },
+  validationError: (
+    res: Response,
+    message: string,
+    errors: ApiError[],
+    code = HTTP_STATUS.VALIDATE
+  ): Response<ApiResponse<null>> => {
+    return res.status(code).json({
+      code,
+      message,
+      errors,
+    });
+  },
+  unauthorized: (
+    res: Response,
+    message: string,
+    errors?: ApiError[],
+    code = HTTP_STATUS.UNAUTHORIZED
+  ): Response<ApiResponse<null>> => {
+    return res.status(code).json({
+      code,
+      message,
+      errors,
+    });
   },
 
-  success: <T>(res: Response, message: string, data?: T): Response =>
-    API.createResponse(res, HTTP_STATUS.OK, message, data),
+  forbidden: (
+    res: Response,
+    message: string,
+    errors?: ApiError[],
+    code = HTTP_STATUS.FORBIDDEN
+  ): Response<ApiResponse<null>> => {
+    return res.status(code).json({
+      code,
+      message,
+      errors,
+    });
+  },
 
-  created: <T>(res: Response, message: string, data?: T): Response =>
-    API.createResponse(res, HTTP_STATUS.CREATED, message, data),
-
+  notFound: (
+    res: Response,
+    message: string,
+    errors?: ApiError[],
+    code = HTTP_STATUS.NOT_FOUND
+  ): Response<ApiResponse<null>> => {
+    return res.status(code).json({
+      code,
+      message,
+      errors,
+    });
+  },
+  serverError: (
+    res: Response,
+    message?: string | "Error en el servidor",
+    errors?: ApiError[],
+    code = HTTP_STATUS.INTERNAL_SERVER
+  ): Response<ApiResponse<null>> => {
+    return res.status(code).json({
+      code,
+      message,
+      errors,
+    });
+  },
   paginated: <T>(
     res: Response,
     message: string,
-    paginatedData: PaginatedData<T>
-  ): Response =>
-    API.createResponse(res, HTTP_STATUS.OK, message, paginatedData),
+    items: T[],
+    total: number,
+    page: number,
+    limit: number,
+    code = HTTP_STATUS.OK
+  ): Response<PaginatedApiResponse<T>> => {
+    const totalPages = Math.ceil(total / limit);
 
-  badRequest: (res: Response, message: string, errors?: any): Response =>
-    API.createResponse(
-      res,
-      HTTP_STATUS.BAD_REQUEST,
+    const paginatedData: PaginatedData<T> = {
+      items,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
+
+    return res.status(code).json({
+      code,
       message,
-      undefined,
-      errors
-    ),
-
-  unauthorized: (res: Response, message: string = "Unauthorized"): Response =>
-    API.createResponse(res, HTTP_STATUS.UNAUTHORIZED, message),
-
-  forbidden: (res: Response, message: string = "Forbidden"): Response =>
-    API.createResponse(res, HTTP_STATUS.FORBIDDEN, message),
-
-  notFound: (res: Response, message: string = "Not Found"): Response =>
-    API.createResponse(res, HTTP_STATUS.NOT_FOUND, message),
-
-  conflict: (res: Response, message: string, errors?: any): Response =>
-    API.createResponse(res, HTTP_STATUS.CONFLICT, message, undefined, errors),
-
-  serverError: (
-    res: Response,
-    message: string = "Error en el servidor contactate con hancito :)",
-    errors?: any
-  ): Response => {
-    return API.createResponse(
-      res,
-      HTTP_STATUS.INTERNAL_SERVER,
-      message,
-      undefined,
-      process.env.NODE_ENV === "development" ? errors : undefined
-    );
+      data: paginatedData,
+    });
   },
-
-  custom: <T>(
-    res: Response,
-    status: number,
-    message: string,
-    data?: T,
-    errors?: any
-  ): Response => API.createResponse(res, status, message, data, errors),
 };

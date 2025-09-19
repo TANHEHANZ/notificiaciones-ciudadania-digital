@@ -8,7 +8,7 @@ const startServer = async () => {
     const server = createServer();
 
     server.listen(config.port, () => {
-      console.log(`SERVICE-ADMIN Running on port: ${config.port}`);
+      console.log(` Running on port: http://localhost:${config.port}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);

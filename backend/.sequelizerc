@@ -1,0 +1,10 @@
+import path from "path";
+
+const BASE_PATH = path.resolve(__dirname, "src", "infraestructure");
+
+module.exports = {
+  config: path.join(BASE_PATH, "configuration", "database.ts"),
+  "models-path": path.join(BASE_PATH, "database", "models"),
+  "seeders-path": path.join(BASE_PATH, "database", "seeders"),
+  "migrations-path": path.join(BASE_PATH, "database", "migrations"),
+};

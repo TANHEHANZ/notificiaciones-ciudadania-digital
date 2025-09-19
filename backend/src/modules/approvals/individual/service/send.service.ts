@@ -6,7 +6,7 @@ import { PropsUpload, UploadFile } from "./upload";
 import { generarSHAFile } from "@/infraestructure/utils/sha256";
 
 export const sendApprovels = async (data: DTO_ParamsSolicitud) => {
-  const base64File = data.documento.buffer.toString("base64");
+  const base64File = await data.documento.buffer.toString("base64"); //----> este es para cuando hagamos la notificacion
   const hash = crypto.createHash("sha256").update(base64File).digest("hex");
 
   const hashFile = generarSHAFile(data.documento);
@@ -42,13 +42,14 @@ export const sendApprovels = async (data: DTO_ParamsSolicitud) => {
   console.log("URL:", resultado);
   console.log("HASH:", hash);
   console.log("HASH_DOC:", hashFile);
-  const api = createApiInstance({
-    baseURL: config.APPOVALS.url,
-    authType: "Bearer",
-    token: config.APPOVALS.accesToken,
-  });
 
-  const responseSolicitud = await api.post("/api/solicitudes", params);
-  console.log("RESPUESTA SOLICITUD", responseSolicitud);
-  return { responseSolicitud, documento: base64File };
+  // const api = createApiInstance({
+  //   baseURL: config.APPOVALS.url,
+  //   authType: "Bearer",
+  //   token: config.APPOVALS.accesToken,
+  // });
+
+  // const responseSolicitud = await api.post("/api/solicitudes", params);
+  // console.log("RESPUESTA SOLICITUD", responseSolicitud);
+  return { params };
 };

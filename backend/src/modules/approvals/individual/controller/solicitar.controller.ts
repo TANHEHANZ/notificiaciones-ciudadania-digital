@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { API } from "@/infraestructure/config/response";
 import { sendApprovels } from "../service/send.service";
 import { catchAsync } from "@/infraestructure/middleware/catchAsync";
-import { NotFoundError } from "@/infraestructure/utils/helpers/errors";
+import { NotFoundError } from "@/infraestructure/helpers/errors";
 
 export const solicitarController = {
   solicitud: catchAsync(async (req: Request, res: Response) => {

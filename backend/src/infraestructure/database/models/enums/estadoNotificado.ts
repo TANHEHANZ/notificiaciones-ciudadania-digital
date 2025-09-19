@@ -1,0 +1,5 @@
+export enum StatusNotificado {
+  PENDIENTE = "PENDIENTE",
+  RECIVIDO = "RECIVIDO",
+  ERROR_NOTIFICADO = "ERROR_NOTIFICADO",
+}

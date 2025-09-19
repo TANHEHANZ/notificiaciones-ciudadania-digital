@@ -6,11 +6,11 @@ const config = {
   port: parseInt(process.env.PORT || "3000"),
   PEM: {
     NOTIFICATION: fs.readFileSync(
-      path.resolve(process.cwd(), "src/.infra/key/NOTIFICATION.pem"),
+      path.resolve(process.cwd(), "src/.infra/key/TECNICO_NOTIFICADOR.pem"),
       "utf8"
     ),
     AUTH: fs.readFileSync(
-      path.resolve(process.cwd(), "src/.infra/key/AUTH.pem"),
+      path.resolve(process.cwd(), "src/.infra/key/AUTORIZACION_LLAVE.pem"),
       "utf8"
     ),
   },

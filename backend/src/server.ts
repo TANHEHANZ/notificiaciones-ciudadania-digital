@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import router from "./modules/routes";
-import { errorHandler } from "./infraestructure/middleware/ErrorHandler";
+import { errorHandler } from "./infraestructure/helpers/handleError";
 
 export const createServer = () => {
   const app = express();

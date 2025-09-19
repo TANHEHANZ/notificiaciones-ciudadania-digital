@@ -38,4 +38,5 @@ export const enviarAuthorization = async () => {
     sha256: sha,
   };
   console.log(JSON.stringify(formatData, null, 2));
+  return formatData;
 };
