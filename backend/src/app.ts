@@ -7,9 +7,9 @@ import { InitBD } from "./infraestructure/config/database";
 const startServer = async () => {
   try {
     const server = createServer();
-    await InitBD();
-    server.listen(config.port, () => {
-      console.log(` Running on port: http://localhost:${config.port}`);
+    // await InitBD();
+    server.listen(3001, "0.0.0.0", () => {
+      console.log("Servidor corriendo en http://192.168.220.119:3001");
     });
   } catch (error) {
     console.error("Failed to start server:", error);

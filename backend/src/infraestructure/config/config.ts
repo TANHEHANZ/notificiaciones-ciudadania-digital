@@ -25,7 +25,7 @@ const config = {
   },
 
   APPOVALS: {
-    accesToken: process.env.TOKEN_APPOVALS ?? "acces token",
+    token: process.env.TOKEN_APPOVALS ?? "acces token",
     url: process.env.URL_APPOVALS ?? "URL",
   },
 };

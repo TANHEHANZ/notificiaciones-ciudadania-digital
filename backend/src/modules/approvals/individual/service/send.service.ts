@@ -43,13 +43,13 @@ export const sendApprovels = async (data: DTO_ParamsSolicitud) => {
   console.log("HASH:", hash);
   console.log("HASH_DOC:", hashFile);
 
-  // const api = createApiInstance({
-  //   baseURL: config.APPOVALS.url,
-  //   authType: "Bearer",
-  //   token: config.APPOVALS.accesToken,
-  // });
+  const api = createApiInstance({
+    baseURL: config.APPOVALS.url,
+    authType: "Bearer",
+    token: config.APPOVALS.token,
+  });
 
-  // const responseSolicitud = await api.post("/api/solicitudes", params);
-  // console.log("RESPUESTA SOLICITUD", responseSolicitud);
-  return { params };
+  const responseSolicitud = await api.post("/api/solicitudes", params);
+  console.log("RESPUESTA SOLICITUD", responseSolicitud);
+  return responseSolicitud;
 };

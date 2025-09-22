@@ -27,6 +27,6 @@
     "resolveJsonModule": true
   },
   "files": ["src/infraestructure/types/global.d.ts"],
-  "include": ["./src/**/*", "../../shared/**/*", "prisma/seeder"],
+  "include": ["./src/**/*", "../../shared/**/*", "prisma/seeder", "public"],
   "exclude": ["node_modules", "dist"]
 }

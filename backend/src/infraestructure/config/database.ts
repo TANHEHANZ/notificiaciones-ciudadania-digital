@@ -10,7 +10,7 @@ const sequelize = new Sequelize({
   port: DB_CONFIG.port,
   dialect: DB_CONFIG.dialect,
   schema: DB_CONFIG.schema,
-  logging: console.log,
+  // logging: console.log,
 });
 sequelize.addModels([path.join(__dirname, "../database/models/**/*.model.ts")]);
 

@@ -48,6 +48,7 @@ export const createApiInstance = (
       return response;
     },
     (error: AxiosError) => {
+      console.log(error);
       if (!error.response) {
         throw new AppError(
           error.message || "Error interno de configuración",

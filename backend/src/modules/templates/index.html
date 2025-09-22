@@ -1,0 +1,102 @@
+<body>
+  <form
+    action="https://tuservicio.com/api/submit"
+    method="POST"
+    enctype="multipart/form-data"
+    class="form"
+  >
+    <h1>Aprobación de documentos</h1>
+    <p class="description">
+      En esta sección debes subir tu documento para su posterior aprobación
+    </p>
+    <section class="infor-user">
+      <p>
+        Usted esta registrado como:<strong> Hanz Limber Tapia Choque</strong>
+      </p>
+      <p>Con correo: <strong>correo-7511786236-8Y@yopmail.com</strong></p>
+    </section>
+    <div class="container-upload"></div>
+    <div class="acciones">
+      <button type="button" class="cancelar">Cancelar</button>
+      <button type="submit" class="subir">Subir documento</button>
+    </div>
+  </form>
+</body>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: sans-serif;
+  }
+  .infor-user {
+    width: 100%;
+    font-size: small;
+  }
+  .description {
+    font-size: small;
+    color: #0009;
+    background-color: #f9b100;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 0.3rem;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 25rem;
+  }
+
+  .container-upload {
+    width: 100%;
+    height: 100%;
+    border-radius: 1em;
+    overflow: hidden;
+    display: block;
+    border: dashed 2px #0002;
+  }
+
+  .acciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  .acciones button {
+    padding: 0.8rem 0;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s;
+  }
+
+  .cancelar {
+    background-color: rgba(206, 205, 205, 0.3);
+  }
+
+  .cancelar:hover {
+    background-color: rgba(206, 205, 205, 0.5);
+  }
+
+  .subir {
+    background-color: black;
+    color: white;
+  }
+
+  .subir:hover {
+    background-color: #333;
+  }
+</style>
