@@ -6,10 +6,10 @@ import { PropsUpload, UploadFile } from "./upload";
 import { generarSHAFile } from "@/infraestructure/utils/sha256";
 
 export const sendApprovels = async (data: DTO_ParamsSolicitud) => {
-  const base64File = await data.documento.buffer.toString("base64"); //----> este es para cuando hagamos la notificacion
+  const base64File = await data.documento.buffer.toString("base64");
   const hash = crypto.createHash("sha256").update(base64File).digest("hex");
 
-  const hashFile = generarSHAFile(data.documento);
+  // const hashFile = generarSHAFile(data.documento); /// este es para el notificador
   const params = {
     documento: base64File,
     hashDocumento: hash,
@@ -18,8 +18,12 @@ export const sendApprovels = async (data: DTO_ParamsSolicitud) => {
     idTramite: randomUUID(),
     descripcion: data.descripcion,
   };
-  console.log(params);
 
+  const api = createApiInstance({
+    baseURL: config.APPOVALS.url,
+    authType: "Bearer",
+    token: config.APPOVALS.token,
+  });
   const props: PropsUpload[] = [
     {
       key: "sistema_id",
@@ -38,18 +42,9 @@ export const sendApprovels = async (data: DTO_ParamsSolicitud) => {
     },
   ];
 
+  const responseSolicitud = await api.post("/api/solicitudes", params);
   const resultado = await UploadFile(props);
   console.log("URL:", resultado);
-  console.log("HASH:", hash);
-  console.log("HASH_DOC:", hashFile);
-
-  const api = createApiInstance({
-    baseURL: config.APPOVALS.url,
-    authType: "Bearer",
-    token: config.APPOVALS.token,
-  });
-
-  const responseSolicitud = await api.post("/api/solicitudes", params);
-  console.log("RESPUESTA SOLICITUD", responseSolicitud);
-  return responseSolicitud;
+  // console.log("RESPUESTA SOLICITUD", responseSolicitud);
+  return responseSolicitud.data;
 };

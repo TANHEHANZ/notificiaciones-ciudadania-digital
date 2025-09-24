@@ -5,7 +5,7 @@ import { SchemaSolicitudParams } from "./validators/params/v_solicitud";
 import { solicitarController } from "./controller/solicitar.controller";
 const IndividualRouter = Router();
 IndividualRouter.post(
-  "/solicitar",
+  "/solicitud",
   upload.single("documento"),
   validate(SchemaSolicitudParams, "body"),
   solicitarController.solicitud

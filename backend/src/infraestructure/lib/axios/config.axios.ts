@@ -48,7 +48,6 @@ export const createApiInstance = (
       return response;
     },
     (error: AxiosError) => {
-      console.log(error);
       if (!error.response) {
         throw new AppError(
           error.message || "Error interno de configuración",
@@ -56,7 +55,8 @@ export const createApiInstance = (
         );
       }
       const status = error.response.status;
-      const message = (error.response.data as any)?.message || "Error de API";
+      const data = error.response.data as any;
+      const message = data?.mensaje || data?.message || "Error de API";
       throw new AppError(message, status);
     }
   );

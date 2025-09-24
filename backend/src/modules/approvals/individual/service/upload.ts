@@ -32,6 +32,6 @@ export const UploadFile = async (
   const res = await submitFile.post("/presupuesto", formData, {
     headers,
   });
-  console.log(JSON.stringify(res, null, 2));
+  console.log(JSON.stringify(res.data, null, 2));
   return res.data;
 };
