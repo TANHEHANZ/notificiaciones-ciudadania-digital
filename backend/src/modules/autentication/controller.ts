@@ -7,30 +7,28 @@ import { AUTENTICATION } from "@/infraestructure/config/enviroments";
 export const AutenticacionController = {
   url: catchAsync(async (req: Request, res: Response) => {
     const getUrl = AuthCiudadaniaService();
-    API.success(res, "Url para autenticaion obtenida exitosamente", getUrl);
+    res.redirect(getUrl);
   }),
 
   //   callback: catchAsync(async (req: Request, res: Response) => {
   //     const systemToken = "asdkjasñda sdlknakmksdlkasdñalknfldshfasjñ.bfnb";
   //     res.send(`
-  //   <script>
-  //     try {
-  //       window.opener.postMessage(
-  //         { token: "${systemToken}" },
-  //         "${AUTENTICATION.redirect_client}"
-  //       );
-  //       console.log("Mensaje enviado al opener");
-  //     } catch (err) {
-  //       console.error("Error enviando mensaje:", err);
-  //     }
-  //     window.close();
-  //   </script>
-  // `);
+  //  <script>
+
+  //   window.opener.postMessage({ token: "${systemToken}" }, "*");
+  // </script>
+  //   `);
   //   }),
+
   callback: catchAsync(async (req: Request, res: Response) => {
+    console.log(req.query);
+    console.log(req.params);
     const systemToken = "abc.123.token";
+    if (!systemToken) {
+      res.redirect(`${AUTENTICATION.redirect_client}/ciudadania/auth/failed`);
+    }
     res.redirect(
-      `${AUTENTICATION.redirect_client}/auth/success/?token=${systemToken}`
+      `${AUTENTICATION.redirect_client}/ciudadania/auth/success/?token=${systemToken}`
     );
   }),
 };
